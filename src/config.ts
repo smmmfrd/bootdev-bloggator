@@ -1,15 +1,37 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
-const filePath = ".gatorconfig.json";
+const filePath = "gatorconfig.json";
 
 type Config = {
-  dbURL: string;
-  currentUserName: string | null;
+  dbUrl: string;
+  currentUserName: string;
 };
 
 export async function readConfig(): Promise<Config> {
   const jsonString: string = readFileSync(filePath, "utf-8");
-  const data: Config = await JSON.parse(jsonString);
+  const data = await JSON.parse(jsonString);
 
-  return data;
+  const config: Config = {
+    dbUrl: data.db_url,
+    currentUserName: data.current_user_name,
+  };
+
+  return config;
+}
+
+export async function setUser(userName: string) {
+  let config: Config = await readConfig();
+
+  config.currentUserName = userName;
+  writeConfig(config);
+}
+
+function writeConfig(config: Config) {
+  const temp = {
+    db_url: config.dbUrl,
+    current_user_name: config.currentUserName,
+  };
+
+  const writable: string = JSON.stringify(temp);
+  writeFileSync(filePath, writable);
 }

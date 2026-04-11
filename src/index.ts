@@ -1,8 +1,10 @@
-import { readConfig } from "./config";
+import { readConfig, setUser } from "./config";
 
-function main() {
-  console.log("Hello, world!");
-  readConfig();
+async function main() {
+  await setUser("Sam");
+
+  const config = await readConfig();
+  console.log(config);
 }
 
 main();
