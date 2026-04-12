@@ -1,6 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import path from "node:path";
 
-const filePath = "gatorconfig.json";
+const configFileName = ".gatorconfig.json";
 
 type Config = {
   dbUrl: string;
@@ -8,6 +10,7 @@ type Config = {
 };
 
 export async function readConfig(): Promise<Config> {
+  const filePath = getConfigFilePath();
   const jsonString: string = readFileSync(filePath, "utf-8");
   const data = await JSON.parse(jsonString);
 
@@ -33,5 +36,11 @@ function writeConfig(config: Config) {
   };
 
   const writable: string = JSON.stringify(temp);
+  const filePath = getConfigFilePath();
   writeFileSync(filePath, writable);
+}
+
+function getConfigFilePath(): string {
+  const homeDir = homedir();
+  return path.join(homeDir, configFileName);
 }
