@@ -1,10 +1,10 @@
-import { readConfig, setUser } from "./config";
+import { CommandRegistry, handlerLogin, registerCommand } from "./commands";
 
 async function main() {
-  await setUser("Sam");
+  const registry: CommandRegistry = {};
+  registerCommand(registry, "login", handlerLogin);
 
-  const config = await readConfig();
-  console.log(config);
+  console.log(registry);
 }
 
 main();
