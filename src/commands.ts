@@ -24,7 +24,7 @@ export function runCommand(
 
 export function handlerLogin(...args: string[]): void {
   if (args.length != 1) {
-    throw new Error("Login requires username only");
+    throw new Error("Login requires username argument");
   }
 
   const userName = args[0];
