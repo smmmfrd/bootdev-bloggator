@@ -9,10 +9,10 @@ type Config = {
   currentUserName: string;
 };
 
-export async function readConfig(): Promise<Config> {
+export function readConfig(): Config {
   const filePath = getConfigFilePath();
   const jsonString: string = readFileSync(filePath, "utf-8");
-  const data = await JSON.parse(jsonString);
+  const data = JSON.parse(jsonString);
 
   const config: Config = {
     dbUrl: data.db_url,
