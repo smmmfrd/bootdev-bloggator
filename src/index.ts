@@ -1,9 +1,16 @@
 import { argv, exit } from "node:process";
-import { CommandRegistry, handlerLogin, registerCommand } from "./commands";
+import {
+  CommandRegistry,
+  handlerLogin,
+  handlerRegister,
+  registerCommand,
+  runCommand,
+} from "./commands";
 
 async function main() {
   const registry: CommandRegistry = {};
   registerCommand(registry, "login", handlerLogin);
+  registerCommand(registry, "register", handlerRegister);
 
   const inputs = argv.slice(2);
 
@@ -16,7 +23,7 @@ async function main() {
   const [command, args] = [inputs[0], inputs.slice(1)];
 
   try {
-    registry[command](...args);
+    await runCommand(registry, command, ...args);
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log(`Error occurred: ${error.message}`);
@@ -25,6 +32,8 @@ async function main() {
       console.log("An unknown error occurred.");
     }
   }
+
+  exit(0);
 }
 
 main();
