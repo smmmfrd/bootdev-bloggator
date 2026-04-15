@@ -1,4 +1,5 @@
 import { setUser } from "./config";
+import { reset } from "./db/queries/reset";
 import { createUser, findUser } from "./db/queries/users";
 
 type CommandHandler = (...args: string[]) => Promise<void>;
@@ -62,4 +63,9 @@ export async function handlerRegister(...args: string[]): Promise<void> {
   }
 
   setUser(newUserName);
+}
+
+export async function handlerReset(...args: string[]): Promise<void> {
+  await reset();
+  console.log("Reset the database.");
 }

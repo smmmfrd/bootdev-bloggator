@@ -3,6 +3,7 @@ import {
   CommandRegistry,
   handlerLogin,
   handlerRegister,
+  handlerReset,
   registerCommand,
   runCommand,
 } from "./commands";
@@ -11,6 +12,7 @@ async function main() {
   const registry: CommandRegistry = {};
   registerCommand(registry, "login", handlerLogin);
   registerCommand(registry, "register", handlerRegister);
+  registerCommand(registry, "reset", handlerReset);
 
   const inputs = argv.slice(2);
 
