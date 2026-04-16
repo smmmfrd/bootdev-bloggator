@@ -1,6 +1,6 @@
-import { setUser } from "./config";
+import { readConfig, setUser } from "./config";
 import { reset } from "./db/queries/reset";
-import { createUser, findUser } from "./db/queries/users";
+import { createUser, findUser, getUsers } from "./db/queries/users";
 
 type CommandHandler = (...args: string[]) => Promise<void>;
 
@@ -68,4 +68,15 @@ export async function handlerRegister(...args: string[]): Promise<void> {
 export async function handlerReset(...args: string[]): Promise<void> {
   await reset();
   console.log("Reset the database.");
+}
+
+export async function handlerUsers(...args: string[]): Promise<void> {
+  const users = await getUsers();
+  const currentUser = readConfig().currentUserName;
+
+  for (const user of users) {
+    console.log(
+      `* ${user.name} ${user.name === currentUser ? "(current)" : ""}`,
+    );
+  }
 }

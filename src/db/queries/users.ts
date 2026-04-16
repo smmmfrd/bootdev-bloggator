@@ -15,3 +15,8 @@ export async function findUser(name: string) {
   }
   return results[0];
 }
+
+export async function getUsers() {
+  const results = await db.select().from(users);
+  return results;
+}

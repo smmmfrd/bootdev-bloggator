@@ -4,6 +4,7 @@ import {
   handlerLogin,
   handlerRegister,
   handlerReset,
+  handlerUsers,
   registerCommand,
   runCommand,
 } from "./commands";
@@ -13,6 +14,7 @@ async function main() {
   registerCommand(registry, "login", handlerLogin);
   registerCommand(registry, "register", handlerRegister);
   registerCommand(registry, "reset", handlerReset);
+  registerCommand(registry, "users", handlerUsers);
 
   const inputs = argv.slice(2);
 
