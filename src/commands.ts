@@ -1,6 +1,7 @@
 import { readConfig, setUser } from "./config";
 import { reset } from "./db/queries/reset";
 import { createUser, findUser, getUsers } from "./db/queries/users";
+import { fetchFeed } from "./feeds";
 
 type CommandHandler = (...args: string[]) => Promise<void>;
 
@@ -79,4 +80,9 @@ export async function handlerUsers(...args: string[]): Promise<void> {
       `* ${user.name} ${user.name === currentUser ? "(current)" : ""}`,
     );
   }
+}
+
+export async function handlerAgg(...args: string[]): Promise<void> {
+  const rss = await fetchFeed("https://www.wagslane.dev/index.xml");
+  console.log(rss.channel);
 }
