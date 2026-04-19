@@ -1,8 +1,8 @@
 import { readConfig, setUser } from "./config";
-import { createFeed } from "./db/queries/feeds";
+import { createFeed, getFeeds } from "./db/queries/feeds";
 import { reset } from "./db/queries/reset";
 import { createUser, findUser, getUsers } from "./db/queries/users";
-import { fetchFeed } from "./feeds";
+import { fetchFeed, printFeed } from "./feeds";
 
 type CommandHandler = (...args: string[]) => Promise<void>;
 
@@ -109,4 +109,9 @@ export async function handlerAddFeed(...args: string[]): Promise<void> {
   try {
     await createFeed(name, url, currentUser.id);
   } catch (err: unknown) {}
+}
+
+export async function handlerFeeds(...args: string[]): Promise<void> {
+  const feeds = await getFeeds();
+  feeds.forEach(printFeed);
 }
