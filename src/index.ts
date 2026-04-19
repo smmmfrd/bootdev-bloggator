@@ -1,6 +1,7 @@
 import { argv, exit } from "node:process";
 import {
   CommandRegistry,
+  handlerAddFeed,
   handlerAgg,
   handlerLogin,
   handlerRegister,
@@ -17,6 +18,7 @@ async function main() {
   registerCommand(registry, "reset", handlerReset);
   registerCommand(registry, "users", handlerUsers);
   registerCommand(registry, "agg", handlerAgg);
+  registerCommand(registry, "addfeed", handlerAddFeed);
 
   const inputs = argv.slice(2);
 

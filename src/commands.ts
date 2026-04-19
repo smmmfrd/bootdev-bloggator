@@ -1,4 +1,5 @@
 import { readConfig, setUser } from "./config";
+import { createFeed } from "./db/queries/feeds";
 import { reset } from "./db/queries/reset";
 import { createUser, findUser, getUsers } from "./db/queries/users";
 import { fetchFeed } from "./feeds";
@@ -85,4 +86,27 @@ export async function handlerUsers(...args: string[]): Promise<void> {
 export async function handlerAgg(...args: string[]): Promise<void> {
   const rss = await fetchFeed("https://www.wagslane.dev/index.xml");
   console.log(rss.channel);
+}
+
+export async function handlerAddFeed(...args: string[]): Promise<void> {
+  const [name, url] = args;
+
+  if (!name || !url) {
+    throw new Error("Expected a name and URL for the new feed.");
+  }
+
+  const currentUserName = readConfig().currentUserName;
+  const currentUser = await findUser(currentUserName);
+
+  if (!currentUser) {
+    throw new Error("User does not exist");
+  }
+
+  console.log(
+    `Creating Feed named: ${name}\n\turl: ${url}\n\tby user: ${currentUser.name}`,
+  );
+
+  try {
+    await createFeed(name, url, currentUser.id);
+  } catch (err: unknown) {}
 }
